@@ -54,7 +54,8 @@ def plotExperiment(abfFilePath, drugStartTime, measurementTime, drugMeasurementD
     plt.plot(fittedXs2, fittedYs2, '--', label=f"slope2={slope2:0.2}", color="red")
 
     plt.plot(t, segmentMean, ".", color="black", alpha=0.5,markersize=8, label="data")
-    plt.title("Holding Current", fontsize=20)
+    abfName = os.path.basename(abfFilePath)
+    plt.title(abfName, fontsize=20)
     plt.ylabel("Holding Current (pA)", fontsize=12)
     plt.xlabel("Time (minutes)", fontsize=12)
     plt.grid(alpha=.2, ls='--')
