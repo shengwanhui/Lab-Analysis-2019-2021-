@@ -60,7 +60,8 @@ def plotExperiment(abfFilePath, drugStartTime, measurementTime, drugMeasurementD
     plt.grid(alpha=.2, ls='--')
     plt.legend()
 
-    plt.show()
+    #plt.show()
+    return round(slope1,3), round(slope2,3)
 
 
 if __name__ == "__main__":
