@@ -33,7 +33,7 @@ def meanIhold(abfFilePath):
         index2 = pointsPerSecond * 10
         segment = abf.sweepY[index1:index2]
         segmentMean = np.mean(segment)
-        time=(int(i)-1)*sweepDuration/60-tagTime
+        time=(int(i)-1)*sweepDuration/60-(tagTime-5)
         times.append(time)   
         iHold.append(segmentMean)
         abfID = abf.abfID
