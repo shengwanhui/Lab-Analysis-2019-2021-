@@ -11,7 +11,30 @@ import os
 import pyabf
 import abfTools
 
+def getSingleSegmentSlope(segment, samplePeriod):
+    """
+    Return the slope of a linear line fitted to a single segment.
+    Sample period must be in minutes, and returned slope will be pA/min.
+    """
+    xs = np.arange(len(segment)) * samplePeriod
+    slope, intercept, r, p, stdErr = scipy.stats.linregress(xs, segment)
+    return slope
+
+def getAllSegmentSlopes(segments, samplePeriod):
+    """
+    Given a list of segments, return a list of slopes (one per segment).
+    Sample period must be in minutes, and returned slopes will be pA/min.
+    """
+    slopes = []
+    for segment in segments:
+        slope = getSingleSegmentSlope(segment, samplePeriod)
+        slopes.append(slope)
+    return slopes
+
 def getRegression(times, currents, xmin, xmax):
+    """
+    Make linear regression during the period from xim to xmax
+    """
     index1=int(xmin*60/10)
     index2=int(xmax*60/10)
     ys = currents[index1:index2]

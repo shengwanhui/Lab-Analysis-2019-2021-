@@ -22,7 +22,7 @@ def meanIhold(abfFilePath):
     calculate the mean current for a portion of every sweep (6-10s in this case)
     """
     abf = pyabf.ABF(abfFilePath)
-    tagTime = abfTools.getFirstTagTime(abfFilePath)
+    tagTime = getFirstTagTime(abfFilePath)
     sweepDuration=int(abf.protocol[29:31])
     times=[]
     iHold=[]

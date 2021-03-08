@@ -20,7 +20,16 @@ def descriptiveStats(sample):
     stdErr = stDev/np.sqrt(len(sample))
     return mean, stDev, stdErr
 
-
+def getMovingWindowSegments(data, windowSize):
+    """
+    Given a 1D list of data, slide a window along to create individual segments
+    and return a list of lists (each of length windowSize)
+    """
+    segmentCount = len(data) - windowSize
+    segments = [None] * segmentCount
+    for i in range(segmentCount):
+        segments[i] = data[i:i+windowSize]
+    return segments
 
 
 
