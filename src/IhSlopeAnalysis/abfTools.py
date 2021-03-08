@@ -35,7 +35,8 @@ def meanIhold(abfFilePath):
         time=(int(i)-1)*sweepDuration/60
         times.append(time)   
         iHold.append(segmentMean)
-    return iHold, times
+        abfID = abf.abfID
+    return iHold, times, abfID
 
 if __name__ == "__main__":
     raise Exception("this file must be imported, not run directly")
