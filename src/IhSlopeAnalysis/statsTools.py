@@ -31,12 +31,13 @@ def getMovingWindowSegments(data, windowSize):
         segments[i] = data[i:i+windowSize]
     return segments
 
-def rangeStats(data,start, end, outputType):
+def rangeStats(data,start, end, outputType, tagTime):
     """
     Calculate the mean, max, or min during a selected time period (min).
     """
-    indexStart = int(start*60/10)
-    indexEnd = int(end*60/10)+1
+
+    indexStart = int(start*60/10-(tagTime-1))
+    indexEnd = int(end*60/10-(tagTime-1))+1
     dataSelect = data[indexStart:indexEnd]
     if outputType == "mean":
         output = sum(dataSelect)/len(dataSelect)
