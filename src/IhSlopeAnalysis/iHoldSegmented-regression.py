@@ -48,7 +48,8 @@ if __name__ == "__main__":
     nonResponders=[]
     for i in range(len(abfIDs)):
         deltaSlope = round(slopesDrug[i]-slopesBaseline[i],3)
-        if deltaSlope> -4:
+        responderThreshold = -4 # pA / min
+        if deltaSlope> responderThreshold:
             nonResponders.append(abfIDs[i])
         else:
             responders.append(abfIDs[i])
