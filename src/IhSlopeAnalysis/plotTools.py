@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import statsTools
 import abfTools
 import numpy as np
+import os
 
 def plotPairs(ys1, ys2):
     """
@@ -23,6 +24,19 @@ def plotPairs(ys1, ys2):
     plt.xticks(tickPositions, tickLabels)
     plt.show()
 
+def plotTwoGroups(ys1, ys2):
+    plt.figure(figsize=(3, 4))
+    for i in range(len(ys1)):
+        plt.plot(1, ys1[i], 'b.', ms=10)
+    for i in range(len(ys2)):
+        plt.plot(2, ys2[i], 'r.', ms=10)
+    # NOTE: for unpaired, two-sample t-test use ttest_ind()
+    plt.axis([.5, 2.5, None, None])
+    tickPositions = [1, 2]
+    tickLabels = ["responders", "non-res"]
+    plt.xticks(tickPositions, tickLabels)
+    plt.show()    
+
 def scatterPlot(xs, ys, abfFilePath, yAxisLabel):
     plt.figure(figsize=(8, 4))
     tagTime = abfTools.getFirstTagTime(abfFilePath)
@@ -34,22 +48,25 @@ def scatterPlot(xs, ys, abfFilePath, yAxisLabel):
     plt.xlim(0,None)
     plt.show()
 
-def currentSlopeTimePlot(currents, timesRaw, slopes,timesSegs,peakSlopeTime, peakSlopeValue, windowSize, sweepPeriod):
-        
+def currentSlopeTimePlot(currents, timesRaw, slopes,timesSegs,peakSlopeTime, peakSlopeValue, windowSize, sweepPeriod, abfFilePath):
     ax1 = plt.subplot(211)
     #plt.xlim(0,None)
-
+    plt.axvspan(5, 10, color = "yellow", alpha = .2) # drug application time (5-10min)
     plt.plot(timesRaw, currents, '.-')
     plt.xlabel("Time (minutes)")
     plt.ylabel("Current (pA)")
     plt.axvline(peakSlopeTime, ls='--', color='r', lw=1, alpha=.2)
+    # add abf name to the title
+    abfName = os.path.basename(abfFilePath)
+    plt.title(abfName, fontsize=20)
 
     # highlight the window around the peak neagtive slope
     halfWindowTime = (windowSize * sweepPeriod) / 2
-    plt.axvspan(peakSlopeTime - halfWindowTime, peakSlopeTime + halfWindowTime, color='r', alpha=.2)
+    plt.axvspan(peakSlopeTime - halfWindowTime, peakSlopeTime + halfWindowTime, color='r', alpha=.2) # the segment used for slope max
 
     ax2 = plt.subplot(212, sharex=ax1)
-    plt.plot(timesSegs, slopes, '.-')
+    plt.axvspan(5, 10, color = "yellow", alpha = .2)  # drug application time (5-10min)
+    plt.plot(timesSegs, slopes, '.-', color = "green")
     plt.plot(peakSlopeTime, peakSlopeValue, 'r.', ms=15, alpha=.5)
     plt.xlabel("Time (minutes)")
     plt.ylabel("Slope (pA / min)")

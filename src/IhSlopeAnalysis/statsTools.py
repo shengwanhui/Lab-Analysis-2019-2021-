@@ -36,15 +36,15 @@ def rangeStats(data,start, end, outputType, tagTime):
     Calculate the mean, max, or min during a selected time period (min).
     """
 
-    indexStart = int(start*60/10-(tagTime-1))
-    indexEnd = int(end*60/10-(tagTime-1))+1
-    dataSelect = data[indexStart:indexEnd]
+    indexStart = int((start+(tagTime-5))*60/10)
+    indexEnd = int((end+(tagTime-5))*60/10)
+    #data = data[indexStart:indexEnd]
     if outputType == "mean":
-        output = sum(dataSelect)/len(dataSelect)
+        output = sum(data[indexStart:indexEnd])/len(data[indexStart:indexEnd])
     elif outputType == "max":
-        output = max(dataSelect)
+        output = max(data[indexStart:indexEnd])
     elif outputType == "min":
-        output = min(dataSelect)
+        output = min(data[indexStart:indexEnd])
     
     else:
         print("select outputType from mean, max, min")
