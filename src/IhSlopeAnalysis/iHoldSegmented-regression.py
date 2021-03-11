@@ -29,8 +29,8 @@ if __name__ == "__main__":
         timesSegs = np.arange(len(slopes))*sweepPeriod + slopeTimeOffset
 
         # rave function
-        slopeBaseline = statsTools.rangeStats(slopes,3,5,"mean", tagTime) # the mean slope between 3-5min was used as the baseline slope
-        slopeDrug = statsTools.rangeStats(slopes,5,10,"min", tagTime) # the minimal slope between 5-15min was used as the drug slope
+        slopeBaseline = statsTools.rangeStats(slopes,3,5,"mean", sweepPeriod,tagTime) # the mean slope between 3-5min was used as the baseline slope
+        slopeDrug = statsTools.rangeStats(slopes,5,10,"min", sweepPeriod,tagTime) # the minimal slope between 5-15min was used as the drug slope
         slopesBaseline.append(slopeBaseline)
         slopesDrug.append(slopeDrug)
 

@@ -11,6 +11,8 @@ def pairedTTest(sample1, sample2):
     # NOTE: for unpaired, two-sample t-test use ttest_ind()
     return pValue
 
+
+
 def descriptiveStats(sample):
     """
     Report the mean, standard deviation, standard error
@@ -31,20 +33,20 @@ def getMovingWindowSegments(data, windowSize):
         segments[i] = data[i:i+windowSize]
     return segments
 
-def rangeStats(data,start, end, outputType, tagTime):
+def rangeStats(data,start, end, outputType, interDataInterval,tagTime):
     """
     Calculate the mean, max, or min during a selected time period (min).
     """
 
-    indexStart = int((start+(tagTime-5))*60/10)
-    indexEnd = int((end+(tagTime-5))*60/10)
-    #data = data[indexStart:indexEnd]
+    indexStart = int((start+(tagTime-5))/interDataInterval)
+    indexEnd = int((end+(tagTime-5))/interDataInterval)
+    data = data[indexStart:indexEnd]
     if outputType == "mean":
-        output = sum(data[indexStart:indexEnd])/len(data[indexStart:indexEnd])
+        output = sum(data)/len(data)
     elif outputType == "max":
-        output = max(data[indexStart:indexEnd])
+        output = max(data)
     elif outputType == "min":
-        output = min(data[indexStart:indexEnd])
+        output = min(data)
     
     else:
         print("select outputType from mean, max, min")
