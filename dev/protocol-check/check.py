@@ -1,6 +1,9 @@
 """
 This script lists the protocol for every ABF in a list.
 Its purpose is to identify ABFs in a list that may have an incorrect/unintended protocol.
+
+In addition to inspecting the protocol name, it can also inspect the actual epoch levels
+to detect if a named protocol was modified before recording.
 """
 
 import pyabf
@@ -12,6 +15,14 @@ def showProtocolForAbf(abfFilePath):
     """
     abf = pyabf.ABF(abfFilePath, loadData=False)
     print(abf.abfID, abf.protocol)
+
+
+def showProtocolSteps(abfFilePath):
+    """
+    Display the ABF ID and the command levels for every epoch
+    """
+    abf = pyabf.ABF(abfFilePath)
+    print(abf.abfID, abf.sweepEpochs.levels)
 
 
 abfListRaw = """
@@ -80,6 +91,7 @@ if __name__ == "__main__":
     lines = abfListRaw.split("\n")
     for line in lines:
         if (line.startswith("X:")):
-            showProtocolForAbf(line)
+            # showProtocolForAbf(line)
+            showProtocolSteps(line)
         else:
             print(line)
