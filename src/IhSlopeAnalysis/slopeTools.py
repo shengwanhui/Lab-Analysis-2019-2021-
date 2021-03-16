@@ -101,5 +101,37 @@ def consecutiveSlopes(ys, xs):
         slopes.append(slope)
     return slopes
 
+def identifyBySlope(abfIDs, slopesDrug, slopesBaseline, threshold):
+    """
+    Identify a responder by comparing the change of slopes to a given threshold.
+    """
+    responders=[]
+    nonResponders=[]
+    for i in range(len(abfIDs)):
+
+        deltaSlope = round(slopesDrug[i]-slopesBaseline[i],3)   # pA / min
+        if deltaSlope> threshold:
+            nonResponders.append(abfIDs[i])
+
+        else:
+            responders.append(abfIDs[i])
+
+    return responders, nonResponders
+
+def identifyByCurrent(abfIDs, slopesDrug, slopesBaseline,threshold):
+    """
+    Identify a responder by asking whether the change of current is BIGGER than a given threshold.
+    """
+    responders=[]
+    nonResponders=[]
+    for i in range(len(abfIDs)):
+        deltaCurrent = round(slopesDrug[i]-slopesBaseline[i],3)   # pA / min
+        if deltaCurrent > threshold:
+            nonResponders.append(abfIDs[i])
+        else:
+            responders.append(abfIDs[i])
+
+    return responders, nonResponders
+
 if __name__ == "__main__":
     raise Exception("this file must be imported, not run directly")
