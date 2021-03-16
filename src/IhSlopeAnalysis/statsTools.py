@@ -12,15 +12,15 @@ def pairedTTest(sample1, sample2):
     return pValue
 
 
-
 def descriptiveStats(sample):
     """
     Report the mean, standard deviation, standard error
-    """ 
+    """
     mean = np.mean(sample)
     stDev = np.std(sample)
     stdErr = stDev/np.sqrt(len(sample))
     return mean, stDev, stdErr
+
 
 def getMovingWindowSegments(data, windowSize):
     """
@@ -33,10 +33,66 @@ def getMovingWindowSegments(data, windowSize):
         segments[i] = data[i:i+windowSize]
     return segments
 
-def rangeStats(data,start, end, outputType, interDataInterval,tagTime):
+
+def rangeMean(ys, xs, rangeStart, rangeEnd):
+    """
+    Calculate the mean ys between a given period.
+    """
+
+    for i in range(len(xs)):
+        if xs[i] < rangeStart or xs[i] == rangeStart:
+            rangeStartIndex = i
+        elif xs[i] > rangeStart and (xs[i] < rangeEnd or xs[i] == rangeEnd):
+            i = i+1
+            rangeEndIndex = i
+        else:
+            break
+
+    rangeMean = np.mean(ys[rangeStartIndex:rangeEndIndex])
+    return rangeMean
+
+def rangeMax(ys, xs, rangeStart, rangeEnd):
+    """
+    Calculate the max ys between a given period.
+    """
+
+    for i in range(len(xs)):
+        if xs[i] < rangeStart or xs[i] == rangeStart:
+            rangeStartIndex = i
+        elif xs[i] > rangeStart and (xs[i] < rangeEnd or xs[i] == rangeEnd):
+            i = i+1
+            rangeEndIndex = i
+        else:
+            break
+
+    rangeMax = np.max(ys[rangeStartIndex:rangeEndIndex])
+    return rangeMax
+
+def rangeMin(ys, xs, rangeStart, rangeEnd):
+    """
+    Calculate the max ys between a given period.
+    """
+
+    for i in range(len(xs)):
+        if xs[i] < rangeStart or xs[i] == rangeStart:
+            rangeStartIndex = i
+        elif xs[i] > rangeStart and (xs[i] < rangeEnd or xs[i] == rangeEnd):
+            i = i+1
+            rangeEndIndex = i
+        else:
+            break
+
+    rangeMin = np.min(ys[rangeStartIndex:rangeEndIndex])
+    return rangeMin
+
+
+
+
+def rangeStats(data, start, end, outputType, interDataInterval, tagTime):
     """
     Calculate the mean, max, or min during a selected time period (min).
     """
+    raise Exception("This function is no longer used.")
 
     indexStart = int((start+(tagTime-5))/interDataInterval)
     indexEnd = int((end+(tagTime-5))/interDataInterval)
@@ -47,15 +103,29 @@ def rangeStats(data,start, end, outputType, interDataInterval,tagTime):
         output = max(data)
     elif outputType == "min":
         output = min(data)
-    
+
     else:
         print("select outputType from mean, max, min")
 
     return output
 
 
-
-
+def smoothY(ys, xs, windowSize):
+    """
+    Get smoothed ys and xs by averaging every n=windowSize sweeps/indexes.
+    """
+    smoothYs = []
+    smoothXs = []
+    for i in range(len(ys)-1):
+        start = i
+        end = i+windowSize+1
+        if end > len(xs)-1:
+            break
+        else:
+            smoothY = np.mean(ys[start:end])
+            smoothYs.append(smoothY)
+            smoothXs.append(np.mean(xs[start:end]))
+    return smoothYs, smoothXs
 
 
 if __name__ == "__main__":

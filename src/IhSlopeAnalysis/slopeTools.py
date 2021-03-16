@@ -34,7 +34,10 @@ def getAllSegmentSlopes(segments, samplePeriod):
 def getRegression(times, currents, xmin, xmax):
     """
     Make linear regression during the period from xim to xmax
+    This function only works on 10s sweep, and the times have to be min and starts from 0.
+    xmin is included, but xmax is not included.
     """
+
     index1=int(xmin*60/10)
     index2=int(xmax*60/10)
     ys = currents[index1:index2]
@@ -87,6 +90,16 @@ def plotExperiment(abfFilePath, drugStartTime, measurementTime, drugMeasurementD
     #plt.show()
     return round(slope1,3), round(slope2,3)
 
+def consecutiveSlopes(ys, xs):
+    """
+    Get slopes of consecutive data points.
+    """
+    slopes = []
+    samplePeriod  = xs[1]-xs[0]
+    for i in range(len(ys)-1):
+        slope = (ys[i+1]-ys[i])/(samplePeriod)
+        slopes.append(slope)
+    return slopes
 
 if __name__ == "__main__":
     raise Exception("this file must be imported, not run directly")
