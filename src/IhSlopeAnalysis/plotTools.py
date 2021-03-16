@@ -48,19 +48,20 @@ def scatterPlot(xs, ys, abfFilePath, yAxisLabel):
     plt.xlim(0,None)
     plt.show()
 
-def currentSlopeTimePlot(currents, timesRaw, slopes,timesSegs,peakSlopeTime, peakSlopeValue, windowSize, sweepPeriod, abfFilePath):
+def currentSlopeTimePlot(currents, timesRaw, 
+                        slopes, timesSegs, 
+                        peakSlopeTime, peakSlopeValue, 
+                        windowSize, sweepPeriod, abfFilePath):
     ax1 = plt.subplot(211)
-    #plt.xlim(0,None)
     plt.axvspan(5, 10, color = "yellow", alpha = .2) # drug application time (5-10min)
     plt.plot(timesRaw, currents, '.-')
     plt.xlabel("Time (minutes)")
     plt.ylabel("Current (pA)")
     plt.axvline(peakSlopeTime, ls='--', color='r', lw=1, alpha=.2)
-    # add abf name to the title
     abfName = os.path.basename(abfFilePath)
     plt.title(abfName, fontsize=20)
 
-    # highlight the window around the peak neagtive slope
+    # highlight the window around the peak negative slope
     halfWindowTime = (windowSize * sweepPeriod) / 2
     plt.axvspan(peakSlopeTime - halfWindowTime, peakSlopeTime + halfWindowTime, color='r', alpha=.2) # the segment used for slope max
 
