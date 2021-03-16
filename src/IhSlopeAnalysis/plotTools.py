@@ -48,24 +48,19 @@ def scatterPlot(xs, ys, abfFilePath, yAxisLabel):
     plt.xlim(0,None)
     plt.show()
 
-def currentSlopeTimePlot(currents, timesRaw, 
-                        slopes, timesSegs, 
-                        peakSlopeTime, peakSlopeValue, 
-                        windowSize, sweepPeriod, abfFilePath):
-    ax1 = plt.subplot(211)
+def plotCurrentOverTimeAndLabelPeakSlope(currents, timesRaw, peakSlopeTime, windowSize):
     plt.axvspan(5, 10, color = "yellow", alpha = .2) # drug application time (5-10min)
     plt.plot(timesRaw, currents, '.-')
     plt.xlabel("Time (minutes)")
     plt.ylabel("Current (pA)")
     plt.axvline(peakSlopeTime, ls='--', color='r', lw=1, alpha=.2)
-    abfName = os.path.basename(abfFilePath)
-    plt.title(abfName, fontsize=20)
-
-    # highlight the window around the peak negative slope
+    
+    # highlight the window around the peak negative slope (the segment used for slope max)
+    sweepPeriod = timesRaw[1] - timesRaw[0]
     halfWindowTime = (windowSize * sweepPeriod) / 2
-    plt.axvspan(peakSlopeTime - halfWindowTime, peakSlopeTime + halfWindowTime, color='r', alpha=.2) # the segment used for slope max
+    plt.axvspan(peakSlopeTime - halfWindowTime, peakSlopeTime + halfWindowTime, color='r', alpha=.2) 
 
-    ax2 = plt.subplot(212, sharex=ax1)
+def plotSlopesOverTimeAndMarkpeakSlope(slopes, timesSegs, peakSlopeTime, peakSlopeValue):
     plt.axvspan(5, 10, color = "yellow", alpha = .2)  # drug application time (5-10min)
     plt.plot(timesSegs, slopes, '.-', color = "green")
     plt.plot(peakSlopeTime, peakSlopeValue, 'r.', ms=15, alpha=.5)
@@ -73,8 +68,6 @@ def currentSlopeTimePlot(currents, timesRaw,
     plt.ylabel("Slope (pA / min)")
     plt.axhline(0, ls='--', color='k', lw=1, alpha=.2)
     plt.axvline(peakSlopeTime, ls='--', color='r', lw=1, alpha=.2)
-    plt.show()
-
 
 def plotExperimentFromCSV(csvFilePath, baselineStartTime, baselineEndTime, drugStartTime, drugEndTime):
     csvData = pd.read_csv(csvFilePath, sep=",", skiprows=2)
