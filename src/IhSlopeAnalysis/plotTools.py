@@ -4,7 +4,7 @@ import abfTools
 import numpy as np
 import os
 
-def plotPairs(ys1, ys2):
+def plotPairs(ys1, ys2, title):
     """
     Display two arrays of values as a connected scatter plot
     """
@@ -16,8 +16,8 @@ def plotPairs(ys1, ys2):
         lineYs = [ys1[i], ys2[i]]
         plt.plot(lineXs, lineYs, 'k', alpha=.5)
     
-    pValue = statsTools.pairedTTest(ys1, ys2)
-    plt.title(f"p={pValue}")
+    pValue = round(statsTools.pairedTTest(ys1, ys2),5)
+    plt.title(f"{title}, p={pValue}")
     plt.axis([.5, 2.5, None, None])
     tickPositions = [1, 2]
     tickLabels = ["baseline", "drug"]
