@@ -1,7 +1,7 @@
 ## Lab-Analysis
 This repository is for personal projects. The source code included here is under active development and only intended for use by the original developers at this time.
 
-## Descriptions of the jupyter nootbooks saved in src>IhSlopeAnalysis
+## Descriptions of the jupyter nootbooks saved in src>notebooks
 ### [analyzeRangeAvgSlope.ipynb](/notebooks/analyzeRangeAvgSlope.ipynb)
 The goal of this script The goal of this script is identifying responders based on the change of holding current slopes.
 
