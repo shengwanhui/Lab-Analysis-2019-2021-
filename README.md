@@ -14,8 +14,4 @@ The goal of this script is identifying responders based on the change of holding
 This file loads a set of abf, creates segments of ach abf based on the given window size, calculates the slopes of each segment, and finds the most negative slope during drug application of each cell. 
 ![](/doc/examples/Segmented-regression.png)
 
-### [analyzeSingleAbf.ipynb](/notebooks/analyzeSingleAbf.ipynb)
-This file load a single abf and output the slopes before and during drug application.
 
-### [analyzeAllAbf.ipynb](/notebooks/analyzeAllAbf.ipynb)
-This file load a set of abf files and output the comparison of slopes before and during drug application.
