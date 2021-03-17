@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install numpy matplotlib pandas pyabf pytest
+        pip install numpy matplotlib pandas pyabf scipy pytest
     - name: Test with pytest
       run: |
         pytest
