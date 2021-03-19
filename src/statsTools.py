@@ -33,6 +33,22 @@ def getMovingWindowSegments(data, windowSize):
         segments[i] = data[i:i+windowSize]
     return segments
 
+def rangeIndex(xs, rangeXStart, rangeXEnd):
+    """
+    Output the indexes of the rangeXStart (the first point that >= rangeXStart) and the rangeXEnd (the last point that <= rangeXStart).
+    """
+
+    for i in range(len(xs)):
+        if xs[i] < rangeXStart or xs[i] == rangeXStart:
+            rangeStartIndex = i
+        elif xs[i] > rangeXStart and (xs[i] < rangeXEnd or xs[i] == rangeXEnd):
+            i = i+1
+            rangeEndIndex = i
+        else:
+            break
+
+    return rangeStartIndex, rangeEndIndex
+
 
 def rangeMean(ys, xs, rangeStart, rangeEnd):
     """

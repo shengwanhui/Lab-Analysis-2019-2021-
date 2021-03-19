@@ -49,7 +49,7 @@ def scatterPlot(xs, ys, abfFilePath, yAxisLabel):
     plt.show()
 
 def plotCurrentOverTimeAndLabelPeakSlope(currents, timesRaw, peakSlopeTime, windowSize):
-    plt.axvspan(5, 10, color = "yellow", alpha = .2) # drug application time (5-10min)
+    plt.axvspan(5, 15, color = "yellow", alpha = .2) # drug application time (5-15min)
     plt.plot(timesRaw, currents, '.-')
     plt.xlabel("Time (minutes)")
     plt.ylabel("Current (pA)")
@@ -61,7 +61,7 @@ def plotCurrentOverTimeAndLabelPeakSlope(currents, timesRaw, peakSlopeTime, wind
     plt.axvspan(peakSlopeTime - halfWindowTime, peakSlopeTime + halfWindowTime, color='r', alpha=.2) 
 
 def plotSlopesOverTimeAndMarkpeakSlope(slopes, timesSegs, peakSlopeTime, peakSlopeValue):
-    plt.axvspan(5, 10, color = "yellow", alpha = .2)  # drug application time (5-10min)
+    plt.axvspan(5, 15, color = "yellow", alpha = .2)  # drug application time (5-15min)
     plt.plot(timesSegs, slopes, '.-', color = "green")
     plt.plot(peakSlopeTime, peakSlopeValue, 'r.', ms=15, alpha=.5)
     plt.xlabel("Time (minutes)")
