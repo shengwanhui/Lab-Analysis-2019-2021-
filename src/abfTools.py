@@ -5,6 +5,7 @@ This module contains methods for working with ABF files
 import numpy as np
 import pyabf
 
+
 def getFirstTagTime(abfFilePath):
     """
     Return the time (in minutes) of the first tag in an ABF file
@@ -13,31 +14,28 @@ def getFirstTagTime(abfFilePath):
     if (len(abf.tagTimesMin) > 0):
         return abf.tagTimesMin[0]
     else:
-        raise Exception("cannot get the first tag time because this ABF does not have any tags")
-        
+        raise Exception(
+            "cannot get the first tag time because this ABF does not have any tags")
 
+def getMeanBySweep(abf, markerTime1, markerTime2):
+    """
+    Return the mean value between the markers for every sweep.
+    """
+    assert isinstance(abf, pyabf.ABF)
+    
+    pointsPerSecond = abf.dataRate
+    sweepIndex1 = pointsPerSecond * markerTime1
+    sweepIndex2 = pointsPerSecond * markerTime2
 
-def meanIhold(abfFilePath):
-    """
-    calculate the mean current for a portion of every sweep (6-10s in this case)
-    """
-    abf = pyabf.ABF(abfFilePath)
-    tagTime = getFirstTagTime(abfFilePath)
-    sweepDuration=int(abf.protocol[29:31])
-    times=[]
-    iHold=[]
+    means = []
     for i in range(abf.sweepCount):
         abf.setSweep(i)
-        pointsPerSecond = abf.dataRate
-        index1 = pointsPerSecond * 6
-        index2 = pointsPerSecond * 10
-        segment = abf.sweepY[index1:index2]
+        segment = abf.sweepY[sweepIndex1:sweepIndex2]
         segmentMean = np.mean(segment)
-        time=(int(i)-1)*sweepDuration/60-(tagTime-5)
-        times.append(time)   
-        iHold.append(segmentMean)
-        abfID = abf.abfID
-    return iHold, times, abfID
+        means.append(segmentMean)
+
+    return means
+
 
 if __name__ == "__main__":
     raise Exception("this file must be imported, not run directly")
