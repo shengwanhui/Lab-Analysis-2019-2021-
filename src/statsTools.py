@@ -39,9 +39,9 @@ def rangeIndex(xs, rangeXStart, rangeXEnd):
     """
 
     for i in range(len(xs)):
-        if xs[i] < rangeXStart or xs[i] == rangeXStart:
+        if xs[i] <= rangeXStart:
             rangeStartIndex = i
-        elif xs[i] > rangeXStart and (xs[i] < rangeXEnd or xs[i] == rangeXEnd):
+        elif xs[i] > rangeXStart and xs[i] <= rangeXEnd:
             i = i+1
             rangeEndIndex = i
         else:
@@ -106,7 +106,7 @@ def rangeMin(ys, xs, rangeStart, rangeEnd):
 
 def rangeStats(data, start, end, outputType, interDataInterval, tagTime):
     """
-    Calculate the mean, max, or min during a selected time period (min).
+    Calculate the mean, max, or min during a selected time persegSlopesiod (min).
     """
     raise Exception("This function is no longer used.")
 

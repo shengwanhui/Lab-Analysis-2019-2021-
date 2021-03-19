@@ -33,9 +33,8 @@ def getAllSegmentSlopes(segments, samplePeriod):
 
 def getRegression(ys, samplePeriod):
     """
-    Make linear regression during the period from xim to xmax
-    This function only works on 10s sweep, and the times have to be min and starts from 0.
-    xmin is included, but xmax is not included.
+    Make linear regression and return the slope and intercept 
+    based on the given ys and sample period.
     """
 
     xs = np.arange(len(ys)) * samplePeriod
