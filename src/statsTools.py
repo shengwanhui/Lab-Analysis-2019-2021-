@@ -143,7 +143,7 @@ def smoothY(ys, xs, windowSize):
             smoothXs.append(np.mean(xs[start:end]))
     return smoothYs, smoothXs
 
-def responderByDelta(abfIDs, baselineYs, drugYs, threshold):
+def responderByDelta(abfIDs, drugEffects, threshold):
     """
     Identify responders by evaluating the absolute value of difference between drug and baseline surpasses the given threshold in absolute value. 
     This function will report the abfIDs of responders and non-responders, and calculate the response rate.
@@ -151,13 +151,11 @@ def responderByDelta(abfIDs, baselineYs, drugYs, threshold):
     responders=[]
     nonResponders=[]
     for i in range(len(abfIDs)):
-        abfID = abfIDs[i]
-        drugEffect = drugYs[i] - baselineYs[i]
-        responderCriteria = abs(drugEffect) >= abs(threshold)
+        responderCriteria = abs(drugEffects[i]) >= abs(threshold)
         if responderCriteria:
-            responders.append(abfID)
+            responders.append(abfIDs[i])
         else:
-            nonResponders.append(abfID)
+            nonResponders.append(abfIDs[i])
 
     responseRate = round(len(responders)/len(abfIDs)*100, 3)
     print(f"Responders = {len(responders)}")
@@ -165,6 +163,7 @@ def responderByDelta(abfIDs, baselineYs, drugYs, threshold):
     print(f"Response rate = {responseRate}%")
     print("Responders: " + ", ".join(responders))
     print("Non-Responders: " + ", ".join(nonResponders))
+    return 
 
 
 if __name__ == "__main__":
