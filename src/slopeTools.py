@@ -10,6 +10,84 @@ import numpy as np
 import os
 import pyabf
 import abfTools
+import statsTools
+
+def getBaselineAndMaxDrugSlope(abfFilePath, filterSize = 15, regressionSize = 15):
+    """
+    This method analyzes holding current in an ABF and returns baseline slope and drug slope.
+    
+    Arguments:
+        filterSize: number of points (sweeps) for the moving window average
+        regressionSize: number of points (sweeps) to use to calculate regression slopes during the drug range
+        
+    Returns:
+        baseline regression slope (over full range)
+        peak drug regression slope (regression over defined size)
+    """
+    
+    abf = pyabf.ABF(abfFilePath)
+    sweepPeriod = abf.sweepLengthSec / 60.0 # minutes
+    
+    plt.figure(figsize=(8, 6))
+    ax1 = plt.subplot(211)
+    plt.title(abf.abfID)
+    plt.ylabel("Mean Current (pA)")
+    
+    rawCurrents = abfTools.getMeanBySweep(abf, 3, 10)
+    rawTimes = abf.sweepTimesMin
+    plt.plot(rawTimes, rawCurrents, '.', alpha=.5)
+
+    smoothCurrents, smoothTimes = statsTools.smoothY(rawCurrents, rawTimes, filterSize)
+    plt.plot(smoothTimes, smoothCurrents, '-')
+    
+    # determine drug region based on first tag time
+    drugTimeStart = abfTools.getFirstTagTime(abfFilePath)
+    drugSearchWidth = 5 # minutes
+    drugTimeEnd = drugTimeStart + drugSearchWidth
+    plt.axvspan(drugTimeStart, drugTimeEnd, color='r', alpha=.1)
+    
+    # determine baseline region based on drug time
+    baselineTimeStart = drugTimeStart - 3
+    baselineTimeEnd = drugTimeStart
+    baselineIndexStart, baselineIndexEnd = statsTools.rangeIndex(smoothTimes, baselineTimeStart, baselineTimeEnd)
+    baselineCurrent = smoothCurrents[baselineIndexStart:baselineIndexEnd]
+    plt.axvspan(baselineTimeStart, baselineTimeEnd, color='b', alpha=.1)
+    
+    # isolate smoothed baseline currents
+    baselineCurrents = smoothCurrents[baselineIndexStart:baselineIndexEnd]
+    baselineTimes = smoothTimes[baselineIndexStart:baselineIndexEnd]
+    baselineSlope, baselineIntercept, r, p, stdErr = scipy.stats.linregress(baselineTimes, baselineCurrents)
+    
+    # calculate linear regression of baseline region
+    baselineRegressionXs = np.linspace(baselineTimeStart, baselineTimeEnd)
+    baselineRegressionYs = baselineRegressionXs * baselineSlope + baselineIntercept
+    plt.plot(baselineRegressionXs, baselineRegressionYs, color='b', ls='--')
+    print(f"Baseline slope: {baselineSlope} pA/min")
+    
+    # perform a moving window linear regression on the smoothed currents
+    segments = statsTools.getMovingWindowSegments(smoothCurrents, regressionSize)
+    segSlopes = getAllSegmentSlopes(segments, sweepPeriod)   
+    segTimesOffset = (regressionSize * sweepPeriod)
+    segTimes = np.arange(len(segSlopes)) * sweepPeriod + segTimesOffset    
+    plt.subplot(212, sharex = ax1)
+    plt.plot(segTimes, segSlopes)
+    
+    # search the drug range for the most negative slope
+    plt.axvspan(drugTimeStart, drugTimeEnd, color='r', alpha=.1)
+    drugSlopeMin = statsTools.rangeMin(segSlopes, segTimes, drugTimeStart, drugTimeEnd)
+    drugSlopeMinIndex = segSlopes.index(drugSlopeMin)
+    drugSlopeMinTime = segTimes[drugSlopeMinIndex]
+    print(f"Drug slope: {drugSlopeMin} pA/min")
+    plt.axvline(drugSlopeMinTime, color='r', ls='--')
+    plt.axhline(drugSlopeMin, color='r', ls='--')
+    plt.axhline(baselineSlope, color='b', ls='--')
+    
+    plt.ylabel("Slope (pA/min)")
+    plt.xlabel("Time (minutes)")
+    
+    plt.show()
+    
+    return baselineSlope, drugSlopeMin
 
 def getSingleSegmentSlope(segment, samplePeriod):
     """
