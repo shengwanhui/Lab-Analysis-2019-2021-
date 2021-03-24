@@ -143,6 +143,29 @@ def smoothY(ys, xs, windowSize):
             smoothXs.append(np.mean(xs[start:end]))
     return smoothYs, smoothXs
 
+def responderByDelta(abfIDs, baselineYs, drugYs, threshold):
+    """
+    Identify responders by evaluating the absolute value of difference between drug and baseline surpasses the given threshold in absolute value. 
+    This function will report the abfIDs of responders and non-responders, and calculate the response rate.
+    """
+    responders=[]
+    nonResponders=[]
+    for i in range(len(abfIDs)):
+        abfID = abfIDs[i]
+        drugEffect = drugYs[i] - baselineYs[i]
+        responderCriteria = abs(drugEffect) >= abs(threshold)
+        if responderCriteria:
+            responders.append(abfID)
+        else:
+            nonResponders.append(abfID)
+
+    responseRate = round(len(responders)/len(abfIDs)*100, 3)
+    print(f"Responders = {len(responders)}")
+    print(f"Non-Responders = {len(nonResponders)}")
+    print(f"Response rate = {responseRate}%")
+    print("Responders: " + ", ".join(responders))
+    print("Non-Responders: " + ", ".join(nonResponders))
+
 
 if __name__ == "__main__":
     raise Exception("this file must be imported, not run directly")
