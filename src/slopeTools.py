@@ -70,7 +70,7 @@ def getBaselineAndMaxDrugSlope(abfFilePath, filterSize = 15, regressionSize = 15
     segTimesOffset = (regressionSize * sweepPeriod)
     segTimes = np.arange(len(segSlopes)) * sweepPeriod + segTimesOffset    
     plt.subplot(212, sharex = ax1)
-    plt.plot(segTimes, segSlopes)
+    plt.plot(segTimes, segSlopes, '.')
     
     # search the drug range for the most negative slope
     plt.axvspan(drugTimeStart, drugTimeEnd, color='r', alpha=.1)
