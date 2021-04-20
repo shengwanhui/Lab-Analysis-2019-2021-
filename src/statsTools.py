@@ -151,7 +151,7 @@ def responderByDelta(cellNames, drugEffects, threshold):
     responders=[]
     nonResponders=[]
     for i in range(len(cellNames)):
-        responderCriteria = drugEffects[i] <= threshold
+        responderCriteria = drugEffects[i] >= threshold
         if responderCriteria:
             responders.append(cellNames[i])
         else:
