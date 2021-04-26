@@ -131,7 +131,6 @@ def smoothY(ys, windowSize):
     Get smoothed ys and xs by averaging every n=windowSize sweeps/indexes.
     """
     smoothYs = []
-    smoothXs = []
     for i in range(len(ys)-1):
         start = i
         end = i+windowSize+1
