@@ -12,6 +12,8 @@ import pyabf
 import abfTools
 import statsTools
 
+
+
 def getBaselineAndMaxDrugSlope(abfFilePath, filterSize = 15, regressionSize = 15):
     """
     This method analyzes holding current in an ABF and returns baseline slope and drug slope.
@@ -37,7 +39,8 @@ def getBaselineAndMaxDrugSlope(abfFilePath, filterSize = 15, regressionSize = 15
     rawTimes = abf.sweepTimesMin
     plt.plot(rawTimes, rawCurrents, '.', alpha=.5)
 
-    smoothCurrents, smoothTimes = statsTools.smoothY(rawCurrents, rawTimes, filterSize)
+    smoothCurrents = statsTools.smoothY(rawCurrents, filterSize)
+    smoothTimes = statsTools.smoothY(rawTimes, filterSize)
     plt.plot(smoothTimes, smoothCurrents, '-')
     
     # determine drug region based on first tag time
