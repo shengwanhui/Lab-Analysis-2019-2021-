@@ -126,7 +126,7 @@ def rangeStats(data, start, end, outputType, interDataInterval, tagTime):
     return output
 
 
-def smoothY(ys, xs, windowSize):
+def smoothY(ys, windowSize):
     """
     Get smoothed ys and xs by averaging every n=windowSize sweeps/indexes.
     """
@@ -135,13 +135,13 @@ def smoothY(ys, xs, windowSize):
     for i in range(len(ys)-1):
         start = i
         end = i+windowSize+1
-        if end > len(xs)-1:
+        if end > len(ys)-1:
             break
         else:
             smoothY = np.mean(ys[start:end])
             smoothYs.append(smoothY)
-            smoothXs.append(np.mean(xs[start:end]))
-    return smoothYs, smoothXs
+      
+    return smoothYs
 
 def responderByDelta(cellNames, drugEffects, threshold):
     """
