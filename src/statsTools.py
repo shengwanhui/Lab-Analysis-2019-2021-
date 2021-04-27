@@ -162,7 +162,7 @@ def responderByDelta(cellNames, drugEffects, threshold):
     print(f"Response rate = {responseRate}%")
     print("Responders: " + ", ".join(responders))
     print("Non-Responders: " + ", ".join(nonResponders))
-    return 
+    return responseRate
 
 
 if __name__ == "__main__":
