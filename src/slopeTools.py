@@ -50,7 +50,7 @@ def getBaselineAndMaxDrugSlope(abfFilePath, filterSize = 15, regressionSize = 15
     plt.axvspan(drugTimeStart, drugTimeEnd, color='r', alpha=.1)
     
     # determine baseline region based on drug time
-    baselineTimeStart = drugTimeStart - 3
+    baselineTimeStart = drugTimeStart - 5
     baselineTimeEnd = drugTimeStart
     baselineIndexStart, baselineIndexEnd = statsTools.rangeIndex(smoothTimes, baselineTimeStart, baselineTimeEnd)
     baselineCurrent = smoothCurrents[baselineIndexStart:baselineIndexEnd]
