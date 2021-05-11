@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.stats
-
+import pandas as pd
 
 def pairedTTest(sample1, sample2):
     """
@@ -141,6 +141,31 @@ def smoothY(ys, windowSize):
             smoothYs.append(smoothY)
       
     return smoothYs
+
+def responderLessThanDelta(cellNames, drugEffects, threshold):
+    """
+    Identify responders when the value of drug effects are less than the value of the given threshold. 
+    This function will report the abfIDs of responders and non-responders, and calculate the response rate.
+    """
+    response=[]
+    
+    for i in range(len(cellNames)):
+        responderCriteria = drugEffects[i] >= threshold
+        if responderCriteria:
+            response.append("responder")
+        else:
+            response.append("non-responder")
+    df = pd.DataFrame(columns = ["ABF#", "Drug Effect", "Response"])
+    df["ABF#"] = cellNames
+    df["Drug Effect"] = drugEffects
+    df["Response"] = response
+    
+    responseRate = response.count("responder")*100/len(response)
+    responderNumber = response.count("responder")
+    nonResponderNumber = response.count("non-responder")
+    responseDf = pd.DataFrame([responderNumber, nonResponderNumber], index = ["Responder n", "Non-responder n"])
+    display(responseDf)
+    display(df)
 
 def responderByDelta(cellNames, drugEffects, threshold):
     """
