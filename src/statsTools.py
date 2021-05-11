@@ -142,7 +142,7 @@ def smoothY(ys, windowSize):
       
     return smoothYs
 
-def responderLessThanDelta(cellNames, drugEffects, threshold):
+def responderLessThanThreshold(cellNames, drugEffects, threshold):
     """
     Identify responders when the value of drug effects are less than the value of the given threshold. 
     This function will report the abfIDs of responders and non-responders, and calculate the response rate.
@@ -150,7 +150,7 @@ def responderLessThanDelta(cellNames, drugEffects, threshold):
     response=[]
     
     for i in range(len(cellNames)):
-        responderCriteria = drugEffects[i] >= threshold
+        responderCriteria = drugEffects[i] <= threshold
         if responderCriteria:
             response.append("responder")
         else:
