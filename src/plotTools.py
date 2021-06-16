@@ -22,8 +22,8 @@ def plotPairs(ys1, ys2, title):
     tickPositions = [1, 2]
     tickLabels = ["baseline", "drug"]
     plt.xticks(tickPositions, tickLabels)
-    plt.show()
-
+    #plt.show()
+    plt.savefig("boxplot", dpi=300)
 def plotTwoGroups(ys1, ys2):
     plt.figure(figsize=(3, 4))
     for i in range(len(ys1)):
